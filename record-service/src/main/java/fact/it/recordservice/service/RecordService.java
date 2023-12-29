@@ -67,14 +67,14 @@ public class RecordService {
 
         //Checks if the category name exists and gets the category name from the category-service
         CategoryResponse categoryResponse = webClient.get()
-                .uri("http://localhost:8080/api/category",
+                .uri("http://${CATEGORY_SERVICE_BASEURL:localhost:8080}/api/category",
                         uriBuilder -> uriBuilder.queryParam("name", recordRequest.getCategoryName()).build())
                 .retrieve()
                 .bodyToMono(CategoryResponse.class)
                 .block();
 
         GameResponse gameResponse = webClient.get()
-                .uri("http://localhost:8082/api/games",
+                .uri("http://${GAME_SERVICE_BASEURL:localhost:8082}/api/games",
                         uriBuilder -> uriBuilder.queryParam("name", recordRequest.getGameName()).build())
                 .retrieve()
                 .bodyToMono(GameResponse.class)

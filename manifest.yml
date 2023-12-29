@@ -1,0 +1,308 @@
+# mongo-categories service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-categories
+  labels:
+    service: mongo-categories
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+  selector:
+    service: mongo-categories
+---
+# mysql-record service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-record
+  labels:
+    service: mysql-record
+spec:
+  ports:
+  - port: 3308
+    targetPort: 3306
+  selector:
+    service: mysql-record
+---
+# mysql-game service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-game
+  labels:
+    service: mysql-game
+spec:
+  ports:
+  - port: 3307
+    targetPort: 3306
+  selector:
+    service: mysql-game
+---
+# category-service service
+apiVersion: v1
+kind: Service
+metadata:
+  name: category-service
+  labels:
+    service: category-service
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    service: category-service
+---
+# game-service service
+apiVersion: v1
+kind: Service
+metadata:
+  name: game-service
+  labels:
+    service: game-service
+spec:
+  ports:
+  - port: 8082
+    targetPort: 8082
+  selector:
+    service: game-service
+---
+# record-service service
+apiVersion: v1
+kind: Service
+metadata:
+  name: record-service
+  labels:
+    service: record-service
+spec:
+  ports:
+  - port: 8081
+    targetPort: 8081
+  selector:
+    service: record-service
+# PersistentVolumeClaims
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-category-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-record-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---      
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-game-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+# Deployments
+# mongo-categories deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-categories
+  labels:
+    service: mongo-categories
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: mongo-categories
+  template:
+    metadata:
+      labels:
+        service: mongo-categories
+    spec:
+      containers:
+      - name: mongo-categories
+        image: mongo:latest
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongodb-category-data
+          mountPath: /data/db
+      volumes:
+      - name: mongodb-category-data
+        persistentVolumeClaim:
+          claimName: mongodb-category-data
+---
+# mysql-record deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-record
+  labels:
+    service: mysql-record
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: mysql-record
+  template:
+    metadata:
+      labels:
+        service: mysql-record
+    spec:
+      containers:
+      - name: mysql-record
+        image: mysql:latest
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: abc123
+        volumeMounts:
+        - name: mysql-record-data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-record-data
+        persistentVolumeClaim:
+          claimName: mysql-record-data
+---
+# mysql-game deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-game
+  labels:
+    service: mysql-game
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: mysql-game
+  template:
+    metadata:
+      labels:
+        service: mysql-game
+    spec:
+      containers:
+      - name: mysql-game
+        image: mysql:latest
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: abc123
+        volumeMounts:
+        - name: mysql-game-data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-game-data
+        persistentVolumeClaim:
+          claimName: mysql-game-data
+---
+# category-service deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: category-service
+  labels:
+    service: category-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: category-service
+  template:
+    metadata:
+      labels:
+        service: category-service
+    spec:
+      containers:
+      - name: category-service
+        image: r0900099/category-service
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MONGODB_PORT
+          value: "27017"
+        - name: MONGODB_HOST
+          value: mongo-categories
+---
+# game-service deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-service
+  labels:
+    service: game-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: game-service
+  template:
+    metadata:
+      labels:
+        service: game-service
+    spec:
+      containers:
+      - name: game-service
+        image: r0900099/game-service
+        ports:
+        - containerPort: 8082
+        env:
+        - name: MYSQL_DB_USERNAME
+          value: root
+        - name: MYSQL_DB_PASSWORD
+          value: abc123
+        - name: MYSQL_DB_HOST
+          value: mysql-game
+        - name: MYSQL_DB_PORT
+          value: "3307"
+---
+# record-service deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: record-service
+  labels:
+    service: record-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: record-service
+  template:
+    metadata:
+      labels:
+        service: record-service
+    spec:
+      containers:
+      - name: record-service
+        image: r0900099/record-service
+        ports:
+        - containerPort: 8081
+        env:
+        - name: CATEGORY_SERVICE_BASEURL
+          value: category-service:8080
+        - name: GAME_SERVICE_BASEURL
+          value: game-service:8082
+        - name: MYSQL_DB_USERNAME
+          value: root
+        - name: MYSQL_DB_PASSWORD
+          value: abc123
+        - name: MYSQL_DB_HOST
+          value: mysql-record
+        - name: MYSQL_DB_PORT
+          value: "3308"
