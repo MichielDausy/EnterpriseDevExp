@@ -353,3 +353,23 @@ spec:
         - name: GAME_SERVICE_BASEURL
           value: game-service:8082
 ---
+#Ingress
+#Api-gateway ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-gateway-service-ingress
+  namespace: speedrun-application
+spec:
+  rules:
+    - host: localhost  # Replace with your desired domain or use 'localhost' for testing
+      http:
+        paths:
+          - pathType: Prefix
+            path: /api-gateway-service  # Define the path to your service
+            backend:
+              service:
+                name: api-gateway-service
+                port:
+                  number: 8085  # Target port of your service
+---
