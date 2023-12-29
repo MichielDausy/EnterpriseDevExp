@@ -81,6 +81,20 @@ spec:
     targetPort: 8081
   selector:
     service: record-service
+---
+# gateway-service service
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway-service
+  labels:
+    service: api-gateway-service
+spec:
+  ports:
+  - port: 8083
+    targetPort: 8083
+  selector:
+    service: api-gateway-service
 ---    
 # PersistentVolumeClaims
 apiVersion: v1
@@ -308,4 +322,34 @@ spec:
           value: mysql-record
         - name: MYSQL_DB_PORT
           value: "3308"
+---
+# api-gateway-service deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-service
+  labels:
+    service: api-gateway-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: api-gateway-service
+  template:
+    metadata:
+      labels:
+        service: api-gateway-service
+    spec:
+      containers:
+      - name: api-gateway-service
+        image: r0900099/api-gateway-service
+        ports:
+        - containerPort: 8081
+        env:
+        - name: RECORD_SERVICE_BASEURL
+        - value: record-service:8081
+        - name: CATEGORY_SERVICE_BASEURL
+          value: category-service:8080
+        - name: GAME_SERVICE_BASEURL
+          value: game-service:8082
 ---

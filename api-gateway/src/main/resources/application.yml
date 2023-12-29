@@ -1,0 +1,33 @@
+server:
+  port: 8083
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+    reactor.netty: TRACE
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: record-service
+          uri: http://${RECORD_SERVICE_BASEURL:localhost:8081}
+          predicates:
+            - Path=/records
+          filters:
+            - SetPath=/api/record/all
+        - id: category-service
+          uri: http://${CATEGORY_SERVICE_BASEURL:localhost:8080}
+          predicates:
+            - Path=/categories
+          filters:
+            - SetPath=/api/category/all
+        - id: game-service
+          uri: http://${GAME_SERVICE_BASEURL:localhost:8082}
+          predicates:
+            - Path=/games
+            - Method=GET
+          filters:
+            - SetPath=/api/games/all
