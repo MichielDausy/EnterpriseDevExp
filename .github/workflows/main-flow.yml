@@ -28,7 +28,7 @@ jobs:
         run: docker build -t ${{ secrets.DOCKER_USER }}/category-service:latest ./category-service
 
       - name: Upload container to Docker Hub with Push
-        run: docker push ${{ secrets.DOCKER_USER }}/category-service:latest
+        run: docker push ${{ secrets.DOCKER_USER }}/speedrunapplication/category-service:latest
   gameservice:
     runs-on: ubuntu-latest
     name: Java 17 build, test, deliver game-service container
@@ -54,7 +54,7 @@ jobs:
         run: docker build -t ${{ secrets.DOCKER_USER }}/game-service:latest ./game-service
 
       - name: Upload container to Docker Hub with Push
-        run: docker push ${{ secrets.DOCKER_USER }}/game-service:latest
+        run: docker push ${{ secrets.DOCKER_USER }}/speedrunapplication/game-service:latest
   recordservice:
     runs-on: ubuntu-latest
     name: Java 17 build, test, deliver record-service container
@@ -80,4 +80,4 @@ jobs:
         run: docker build -t ${{ secrets.DOCKER_USER }}/record-service:latest ./record-service
 
       - name: Upload container to Docker Hub with Push
-        run: docker push ${{ secrets.DOCKER_USER }}/record-service:latest
+        run: docker push ${{ secrets.DOCKER_USER }}/speedrunapplication/record-service:latest
