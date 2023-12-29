@@ -8,6 +8,7 @@ import fact.it.recordservice.model.Record;
 import fact.it.recordservice.repository.RecordRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,6 +24,10 @@ import java.util.UUID;
 public class RecordService {
     private final RecordRepository recordRepository;
     private final WebClient webClient;
+    @Value("${gameservice.baseurl}")
+    private String gameServiceBaseUrl;
+    @Value("${categoryservice.baseurl}")
+    private String categoryServiceBaseUrl;
 
     private RecordResponse mapToRecordResponse(Record record) {
         return RecordResponse.builder()
@@ -67,14 +72,14 @@ public class RecordService {
 
         //Checks if the category name exists and gets the category name from the category-service
         CategoryResponse categoryResponse = webClient.get()
-                .uri("http://${CATEGORY_SERVICE_BASEURL}/api/category",
+                .uri("http://" + categoryServiceBaseUrl + "/api/category",
                         uriBuilder -> uriBuilder.queryParam("name", recordRequest.getCategoryName()).build())
                 .retrieve()
                 .bodyToMono(CategoryResponse.class)
                 .block();
 
         GameResponse gameResponse = webClient.get()
-                .uri("http://${GAME_SERVICE_BASEURL}/api/games",
+                .uri("http://" + gameServiceBaseUrl + "/api/games",
                         uriBuilder -> uriBuilder.queryParam("name", recordRequest.getGameName()).build())
                 .retrieve()
                 .bodyToMono(GameResponse.class)
