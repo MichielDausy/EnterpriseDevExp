@@ -81,6 +81,7 @@ spec:
     targetPort: 8081
   selector:
     service: record-service
+---    
 # PersistentVolumeClaims
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -114,6 +115,7 @@ spec:
   resources:
     requests:
       storage: 100Mi
+---
 # Deployments
 # mongo-categories deployment
 apiVersion: apps/v1
@@ -306,3 +308,4 @@ spec:
           value: mysql-record
         - name: MYSQL_DB_PORT
           value: "3308"
+---
