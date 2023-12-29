@@ -26,4 +26,4 @@ public class CategoryController {
     public List<CategoryResponse> getAllCategories(){
         return categoryService.getAllCategories();
     }
-} 
+}
