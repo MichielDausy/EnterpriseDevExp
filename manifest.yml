@@ -90,6 +90,7 @@ metadata:
   labels:
     service: api-gateway-service
 spec:
+  type: NodePort
   ports:
   - port: 8085
     targetPort: 8085
@@ -362,11 +363,11 @@ metadata:
   namespace: speedrun-application
 spec:
   rules:
-    - host: localhost  # Replace with your desired domain or use 'localhost' for testing
+    - host: speedrun.com  # Replace with your desired domain or use 'localhost' for testing
       http:
         paths:
           - pathType: Prefix
-            path: /api-gateway-service  # Define the path to your service
+            path: /  # Define the path to your service
             backend:
               service:
                 name: api-gateway-service
