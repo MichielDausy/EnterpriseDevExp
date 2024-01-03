@@ -10,4 +10,5 @@ import java.util.List;
 public interface GameRepository extends MongoRepository<Game, String> {
     Game findByNameEquals(String name);
     List<Game> findByIdNotNull();
+    Game findByGameIdEquals(String gameId);
 }

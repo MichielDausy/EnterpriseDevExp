@@ -25,13 +25,6 @@ spring:
     gateway:
       routes:
         #Speedrun-service
-        - id: speedrun-all
-          uri: http://${SPEEDRUN_SERVICE_BASEURL}
-          predicates:
-            - Path=/speedruns
-            - Method=GET
-          filters:
-            - SetPath=/api/speedruns/all
         - id: speedrun-start
           uri: http://${SPEEDRUN_SERVICE_BASEURL}
           predicates:
@@ -68,11 +61,53 @@ spring:
             - Method=GET
           filters:
             - SetPath=/api/games/top5
+        - id: game-create
+          uri: http://${GAME_SERVICE_BASEURL}
+          predicates:
+            - Path=/games/create
+            - Method=POST
+          filters:
+            - SetPath=/api/games/create
+        - id: game-update
+          uri: http://${GAME_SERVICE_BASEURL}
+          predicates:
+            - Path=/games/update
+            - Method=PUT
+          filters:
+            - SetPath=/api/games/update
+        - id: game-delete
+          uri: http://${GAME_SERVICE_BASEURL}
+          predicates:
+            - Path=/games/delete
+            - Method=PUT
+          filters:
+            - SetPath=/api/games/delete
         #Profile-service
-        - id: profile-service
+        - id: profile-all
           uri: http://${PROFILE_SERVICE_BASEURL}
           predicates:
             - Path=/profiles
             - Method=GET
           filters:
             - SetPath=/api/profiles/all
+        - id: profile-create
+          uri: http://${PROFILE_SERVICE_BASEURL}
+          predicates:
+            - Path=/profiles/create
+            - Method=POST
+          filters:
+            - SetPath=/api/profiles/create
+        - id: profile-update
+          uri: http://${PROFILE_SERVICE_BASEURL}
+          predicates:
+            - Path=/profiles/update
+            - Method=PUT
+          filters:
+            - SetPath=/api/profiles/update
+        - id: profile-delete
+          uri: http://${PROFILE_SERVICE_BASEURL}
+          predicates:
+            - Path=/profiles/delete
+            - Method=DELETE
+          filters:
+            - SetPath=/api/profiles/delete

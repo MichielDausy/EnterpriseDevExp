@@ -108,9 +108,20 @@ public class SpeedrunService {
         return speedruns.stream().map(this::mapToSpeedrunResponse).toList();
     }
 
-    public List<SpeedrunResponse> getAllSpeedruns() {
-        List<Speedrun> speedruns = speedrunRepository.findByIdNotNull();
-        return speedruns.stream().map(this::mapToSpeedrunResponse).toList();
+    public boolean checkGameId(String gameId) {
+        List<Speedrun> speedruns = speedrunRepository.findByGameIdEquals(gameId);
+        if (speedruns == null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkProfileId(String profileId) {
+        List<Speedrun> speedruns = speedrunRepository.findByProfileIdEquals(profileId);
+        if (speedruns == null) {
+            return true;
+        }
+        return false;
     }
 
     public List<ProfileResponse> getTop5SpeedrunsByGame(String gameId) {

@@ -1,5 +1,6 @@
 package fact.it.profileservice.controller;
 
+import fact.it.profileservice.dto.ProfileRequest;
 import fact.it.profileservice.dto.ProfileResponse;
 import fact.it.profileservice.service.ProfileService;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,23 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.OK)
     public ProfileResponse getProfileById(@RequestParam String profileId) {
         return profileService.getProfileById(profileId);
+    }
+
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.OK)
+    public ProfileResponse createProfile(@RequestBody ProfileRequest profileRequest) {
+        return profileService.createProfile(profileRequest);
+    }
+
+    @PutMapping("/update")
+    @ResponseStatus(HttpStatus.OK)
+    public ProfileResponse updateProfile(@RequestBody ProfileRequest profileRequest) {
+        return profileService.updateProfile(profileRequest);
+    }
+
+    @DeleteMapping("/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public String deleteProfile(@RequestBody ProfileRequest profileRequest) {
+        return profileService.deleteProfile(profileRequest);
     }
 }

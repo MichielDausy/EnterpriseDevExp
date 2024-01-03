@@ -36,10 +36,16 @@ public class SpeedrunController {
         return speedrunService.getSpeedrunsByProfileName(profileName);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/gameid")
     @ResponseStatus(HttpStatus.OK)
-    public List<SpeedrunResponse> getAllSpeedruns() {
-        return speedrunService.getAllSpeedruns();
+    public boolean checkGameId(@RequestParam String gameId) {
+        return speedrunService.checkGameId(gameId);
+    }
+
+    @GetMapping("/profileid")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean checkProfileId(@RequestParam String profileId) {
+        return speedrunService.checkProfileId(profileId);
     }
 
     @GetMapping("/top5")
