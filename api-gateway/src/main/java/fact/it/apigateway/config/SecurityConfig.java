@@ -14,8 +14,20 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity serverHttpSecurity) {
         serverHttpSecurity.authorizeExchange(exchange ->
-                exchange.pathMatchers(HttpMethod.GET, "/records")
+                exchange.pathMatchers(HttpMethod.GET, "/speedruns")
                         .permitAll()
+                        .pathMatchers(HttpMethod.GET, "/speedruns/profile")
+                        .permitAll()
+                        .pathMatchers(HttpMethod.POST, "/speedruns/start")
+                        .authenticated()
+                        .pathMatchers(HttpMethod.POST, "/speedruns/end")
+                        .authenticated()
+                        .pathMatchers(HttpMethod.GET, "/games")
+                        .permitAll()
+                        .pathMatchers(HttpMethod.GET, "/games/top5")
+                        .permitAll()
+                        .pathMatchers(HttpMethod.GET, "/profiles")
+                        .authenticated()
                         .anyExchange()
                         .authenticated()
         ).oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));

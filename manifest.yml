@@ -1,58 +1,44 @@
-# mongo-categories service
+# mongo-games service
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-categories
+  name: mongo-games
   labels:
-    service: mongo-categories
+    service: mongo-games
 spec:
   ports:
   - port: 27017
     targetPort: 27017
   selector:
-    service: mongo-categories
+    service: mongo-games
 ---
-# mysql-record service
+# mysql-speedrun service
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql-record
+  name: mysql-speedrun
   labels:
-    service: mysql-record
+    service: mysql-speedrun
 spec:
   ports:
   - port: 3308
     targetPort: 3306
   selector:
-    service: mysql-record
+    service: mysql-speedrun
 ---
-# mysql-game service
+# mysql-profile service
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql-game
+  name: mysql-profile
   labels:
-    service: mysql-game
+    service: mysql-profile
 spec:
   ports:
   - port: 3307
     targetPort: 3306
   selector:
-    service: mysql-game
----
-# category-service service
-apiVersion: v1
-kind: Service
-metadata:
-  name: category-service
-  labels:
-    service: category-service
-spec:
-  ports:
-  - port: 8080
-    targetPort: 8080
-  selector:
-    service: category-service
+    service: mysql-profile
 ---
 # game-service service
 apiVersion: v1
@@ -63,24 +49,38 @@ metadata:
     service: game-service
 spec:
   ports:
-  - port: 8082
-    targetPort: 8082
+  - port: 8080
+    targetPort: 8080
   selector:
     service: game-service
 ---
-# record-service service
+# profile-service service
 apiVersion: v1
 kind: Service
 metadata:
-  name: record-service
+  name: profile-service
   labels:
-    service: record-service
+    service: profile-service
+spec:
+  ports:
+  - port: 8082
+    targetPort: 8082
+  selector:
+    service: profile-service
+---
+# speedrun-service service
+apiVersion: v1
+kind: Service
+metadata:
+  name: speedrun-service
+  labels:
+    service: speedrun-service
 spec:
   ports:
   - port: 8081
     targetPort: 8081
   selector:
-    service: record-service
+    service: speedrun-service
 ---
 # gateway-service service
 apiVersion: v1
@@ -101,7 +101,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mongodb-category-data
+  name: mongodb-game-data
 spec:
   accessModes:
     - ReadWriteOnce
@@ -112,7 +112,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql-record-data
+  name: mysql-speedrun-data
 spec:
   accessModes:
     - ReadWriteOnce
@@ -123,7 +123,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql-game-data
+  name: mysql-profile-data
 spec:
   accessModes:
     - ReadWriteOnce
@@ -132,55 +132,55 @@ spec:
       storage: 100Mi
 ---
 # Deployments
-# mongo-categories deployment
+# mongo-games deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongo-categories
+  name: mongo-games
   labels:
-    service: mongo-categories
+    service: mongo-games
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: mongo-categories
+      service: mongo-games
   template:
     metadata:
       labels:
-        service: mongo-categories
+        service: mongo-games
     spec:
       containers:
-      - name: mongo-categories
+      - name: mongo-games
         image: mongo:latest
         ports:
         - containerPort: 27017
         volumeMounts:
-        - name: mongodb-category-data
+        - name: mongodb-game-data
           mountPath: /data/db
       volumes:
-      - name: mongodb-category-data
+      - name: mongodb-game-data
         persistentVolumeClaim:
-          claimName: mongodb-category-data
+          claimName: mongodb-game-data
 ---
-# mysql-record deployment
+# mysql-speedrun deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-record
+  name: mysql-speedrun
   labels:
-    service: mysql-record
+    service: mysql-speedrun
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: mysql-record
+      service: mysql-speedrun
   template:
     metadata:
       labels:
-        service: mysql-record
+        service: mysql-speedrun
     spec:
       containers:
-      - name: mysql-record
+      - name: mysql-speedrun
         image: mysql:latest
         ports:
         - containerPort: 3306
@@ -188,32 +188,32 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           value: abc123
         volumeMounts:
-        - name: mysql-record-data
+        - name: mysql-speedrun-data
           mountPath: /var/lib/mysql
       volumes:
-      - name: mysql-record-data
+      - name: mysql-speedrun-data
         persistentVolumeClaim:
-          claimName: mysql-record-data
+          claimName: mysql-speedrun-data
 ---
-# mysql-game deployment
+# mysql-profile deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-game
+  name: mysql-profile
   labels:
-    service: mysql-game
+    service: mysql-profile
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: mysql-game
+      service: mysql-profile
   template:
     metadata:
       labels:
-        service: mysql-game
+        service: mysql-profile
     spec:
       containers:
-      - name: mysql-game
+      - name: mysql-profile
         image: mysql:latest
         ports:
         - containerPort: 3306
@@ -221,40 +221,12 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           value: abc123
         volumeMounts:
-        - name: mysql-game-data
+        - name: mysql-profile-data
           mountPath: /var/lib/mysql
       volumes:
-      - name: mysql-game-data
+      - name: mysql-profile-data
         persistentVolumeClaim:
-          claimName: mysql-game-data
----
-# category-service deployment
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: category-service
-  labels:
-    service: category-service
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      service: category-service
-  template:
-    metadata:
-      labels:
-        service: category-service
-    spec:
-      containers:
-      - name: category-service
-        image: r0900099/category-service
-        ports:
-        - containerPort: 8080
-        env:
-        - name: MONGODB_PORT
-          value: "27017"
-        - name: MONGODB_HOST
-          value: mongo-categories
+          claimName: mysql-profile-data
 ---
 # game-service deployment
 apiVersion: apps/v1
@@ -277,6 +249,34 @@ spec:
       - name: game-service
         image: r0900099/game-service
         ports:
+        - containerPort: 8080
+        env:
+        - name: MONGODB_PORT
+          value: "27017"
+        - name: MONGODB_HOST
+          value: mongo-games
+---
+# profile-service deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: profile-service
+  labels:
+    service: profile-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: profile-service
+  template:
+    metadata:
+      labels:
+        service: profile-service
+    spec:
+      containers:
+      - name: profile-service
+        image: r0900099/profile-service
+        ports:
         - containerPort: 8082
         env:
         - name: MYSQL_DB_USERNAME
@@ -284,43 +284,43 @@ spec:
         - name: MYSQL_DB_PASSWORD
           value: abc123
         - name: MYSQL_DB_HOST
-          value: mysql-game
+          value: mysql-profile
         - name: MYSQL_DB_PORT
           value: "3307"
 ---
-# record-service deployment
+# speedrun-service deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: record-service
+  name: speedrun-service
   labels:
-    service: record-service
+    service: speedrun-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: record-service
+      service: speedrun-service
   template:
     metadata:
       labels:
-        service: record-service
+        service: speedrun-service
     spec:
       containers:
-      - name: record-service
-        image: r0900099/record-service
+      - name: speedrun-service
+        image: r0900099/speedrun-service
         ports:
         - containerPort: 8081
         env:
-        - name: CATEGORY_SERVICE_BASEURL
-          value: category-service:8080
         - name: GAME_SERVICE_BASEURL
-          value: game-service:8082
+          value: game-service:8080
+        - name: PROFILE_SERVICE_BASEURL
+          value: profile-service:8082
         - name: MYSQL_DB_USERNAME
           value: root
         - name: MYSQL_DB_PASSWORD
           value: abc123
         - name: MYSQL_DB_HOST
-          value: mysql-record
+          value: mysql-speedrun
         - name: MYSQL_DB_PORT
           value: "3308"
 ---
@@ -347,12 +347,12 @@ spec:
         ports:
         - containerPort: 8085
         env:
-        - name: RECORD_SERVICE_BASEURL
-          value: record-service:8081
-        - name: CATEGORY_SERVICE_BASEURL
-          value: category-service:8080
+        - name: SPEEDRUN_SERVICE_BASEURL
+          value: speedrun-service:8081
         - name: GAME_SERVICE_BASEURL
-          value: game-service:8082
+          value: game-service:8080
+        - name: PROFILE_SERVICE_BASEURL
+          value: profile-service:8082
 ---
 #Ingress
 #Api-gateway ingress
@@ -363,7 +363,7 @@ metadata:
   namespace: speedrun-application
 spec:
   rules:
-    - host: speedrun.com  # Replace with your desired domain or use 'localhost' for testing
+    - host: speedrun.com
       http:
         paths:
           - pathType: Prefix

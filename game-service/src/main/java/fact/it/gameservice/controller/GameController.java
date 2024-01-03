@@ -1,6 +1,7 @@
 package fact.it.gameservice.controller;
 
 import fact.it.gameservice.dto.GameResponse;
+import fact.it.gameservice.dto.ProfileResponse;
 import fact.it.gameservice.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,13 +17,19 @@ public class GameController {
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<GameResponse> getAllGames(){
+    public List<GameResponse> getAllGames() {
         return gameService.getAllGames();
     }
 
-    @GetMapping
+    @GetMapping("/getid")
     @ResponseStatus(HttpStatus.OK)
-    public GameResponse getGameByName(@RequestParam String name) {
-        return gameService.getGameByName(name);
+    public GameResponse getGameId(@RequestParam String gameName) {
+        return gameService.getGameId(gameName);
+    }
+
+    @GetMapping("/top5")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProfileResponse> top5(@RequestParam String game) {
+        return gameService.top5(game);
     }
 }

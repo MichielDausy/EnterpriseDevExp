@@ -1,16 +1,13 @@
 package fact.it.gameservice.repository;
 
 import fact.it.gameservice.model.Game;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
-@Transactional
-public interface GameRepository extends JpaRepository<Game, Long> {
-    List<Game> findByNameNotNull(); //gets all games
-
+public interface GameRepository extends MongoRepository<Game, String> {
     Game findByNameEquals(String name);
+    List<Game> findByIdNotNull();
 }

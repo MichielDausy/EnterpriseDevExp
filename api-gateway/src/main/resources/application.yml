@@ -24,22 +24,55 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: record-service
-          uri: http://${RECORD_SERVICE_BASEURL:localhost:8081}
+        #Speedrun-service
+        - id: speedrun-all
+          uri: http://${SPEEDRUN_SERVICE_BASEURL:localhost:8081}
           predicates:
-            - Path=/records
+            - Path=/speedruns
+            - Method=GET
           filters:
-            - SetPath=/api/record/all
-        - id: category-service
-          uri: http://${CATEGORY_SERVICE_BASEURL:localhost:8080}
+            - SetPath=/api/speedruns/all
+        - id: speedrun-start
+          uri: http://${SPEEDRUN_SERVICE_BASEURL:localhost:8081}
           predicates:
-            - Path=/categories
+            - Path=/speedrun/start
+            - Method=POST
           filters:
-            - SetPath=/api/category/all
-        - id: game-service
-          uri: http://${GAME_SERVICE_BASEURL:localhost:8082}
+            - SetPath=/api/speedruns/start
+        - id: speedrun-end
+          uri: http://${SPEEDRUN_SERVICE_BASEURL:localhost:8081}
+          predicates:
+            - Path=/speedrun/end
+            - Method=POST
+          filters:
+            - SetPath=/api/speedruns/end
+        - id: speedrun-profile
+          uri: http://${SPEEDRUN_SERVICE_BASEURL:localhost:8081}
+          predicates:
+            - Path=/speedrun/profile
+            - Method=GET
+          filters:
+            - SetPath=/api/speedruns/profiles
+        #Game-service
+        - id: game-all
+          uri: http://${GAME_SERVICE_BASEURL:localhost:8080}
           predicates:
             - Path=/games
             - Method=GET
           filters:
             - SetPath=/api/games/all
+        - id: game-top5
+          uri: http://${GAME_SERVICE_BASEURL:localhost:8080}
+          predicates:
+            - Path=/games/top5
+            - Method=GET
+          filters:
+            - SetPath=/api/games/top5
+        #Profile-service
+        - id: profile-service
+          uri: http://${PROFILE_SERVICE_BASEURL:localhost:8082}
+          predicates:
+            - Path=/profiles
+            - Method=GET
+          filters:
+            - SetPath=/api/profiles/all

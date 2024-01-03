@@ -1,4 +1,4 @@
-package fact.it.gameservice.dto;
+package fact.it.profileservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GameResponse {
-    //put game data, profile data and speedrun time
-    private String gameId;
-    private String name;
+public class ProfileResponse {
+    private String profileId;
+    private String username;
+    private String email;
 }

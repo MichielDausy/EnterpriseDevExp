@@ -1,56 +1,70 @@
 package fact.it.gameservice.service;
 
 import fact.it.gameservice.dto.GameResponse;
+import fact.it.gameservice.dto.ProfileResponse;
 import fact.it.gameservice.model.Game;
 import fact.it.gameservice.repository.GameRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class GameService {
     private final GameRepository gameRepository;
+    private final WebClient webClient;
+    @Value("${speedrunservice.baseurl}")
+    private String speedrunServiceBaseUrl;
 
     private GameResponse mapToGameResponse(Game game) {
         return GameResponse.builder()
-                .id(game.getId())
+                .gameId(game.getGameId())
                 .name(game.getName())
-                .description(game.getDescription())
                 .build();
     }
 
     @PostConstruct
     public void loadData() {
         if (gameRepository.count() == 0) {
-            Game game0 = new Game();
-            game0.setName("The Legend of Zelda: Breath of the Wild");
-            game0.setDescription("An action-adventure game set in a vast open world. Players explore the kingdom of Hyrule, solving puzzles, battling enemies, and uncovering the story of the hero Link's quest to defeat the evil Calamity Ganon.");
+            for (int i = 0; i < 15; i++) {
+                Game game = new Game();
+                game.setName("Game_" + i);
+                game.setGameId(UUID.randomUUID().toString());
+                // set other properties if needed
 
-            Game game1 = new Game();
-            game1.setName("The Witcher 3: Wild Hunt");
-            game1.setDescription("A sprawling RPG set in a dark fantasy world. Players control Geralt of Rivia, a monster hunter, as he navigates through a morally complex narrative, slaying beasts, making choices that affect the world, and searching for his missing adopted daughter.");
-
-            Game game2 = new Game();
-            game2.setName("Portal 2");
-            game2.setDescription("A mind-bending puzzle game that challenges players with a series of tests using a portal gun. Players solve physics-based puzzles, manipulate space, and navigate through a compelling narrative that combines humor and intricate level design.");
-
-            // Save games to the repository
-            gameRepository.saveAll(Arrays.asList(game0, game1, game2));
+                gameRepository.save(game);
+            }
         }
     }
 
-    @Transactional(readOnly = true)
-    public List<GameResponse> getAllGames() {
-        return gameRepository.findByNameNotNull().stream().map(this::mapToGameResponse).toList();
+    public GameResponse getGameId(String gameName) {
+        Game game = gameRepository.findByNameEquals(gameName);
+        return mapToGameResponse(game);
     }
 
-    @Transactional(readOnly = true)
-    public GameResponse getGameByName(String name) {
-        return mapToGameResponse(gameRepository.findByNameEquals(name));
+    public List<ProfileResponse> top5(String gameName) {
+        //Check if game exists
+        Game game = gameRepository.findByNameEquals(gameName);
+        if (game == null) {
+            return null;
+        }
+
+        // Fetch profiles for the game from the ProfileService
+        List<ProfileResponse> profiles = webClient.get()
+                .uri("http://" + speedrunServiceBaseUrl + "/api/speedruns/top5",
+                        uriBuilder -> uriBuilder.queryParam("gameId", game.getGameId()).build()
+                                ).retrieve().bodyToFlux(ProfileResponse.class).collectList().block();
+
+        return profiles;
+    }
+
+    public List<GameResponse> getAllGames() {
+        List<Game> games = gameRepository.findByIdNotNull();
+        return games.stream().map(this::mapToGameResponse).toList();
     }
 }

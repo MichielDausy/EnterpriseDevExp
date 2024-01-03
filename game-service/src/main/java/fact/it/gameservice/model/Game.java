@@ -1,21 +1,18 @@
 package fact.it.gameservice.model;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "game")
-@Getter
-@Setter
+@Document(value = "game")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@Data
 public class Game {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
+    private String gameId;
     private String name;
-    private String description;
 }
