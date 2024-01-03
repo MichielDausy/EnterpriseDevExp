@@ -26,43 +26,43 @@ spring:
       routes:
         #Speedrun-service
         - id: speedrun-all
-          uri: http://${SPEEDRUN_SERVICE_BASEURL:localhost:8081}
+          uri: http://${SPEEDRUN_SERVICE_BASEURL}
           predicates:
             - Path=/speedruns
             - Method=GET
           filters:
             - SetPath=/api/speedruns/all
         - id: speedrun-start
-          uri: http://${SPEEDRUN_SERVICE_BASEURL:localhost:8081}
+          uri: http://${SPEEDRUN_SERVICE_BASEURL}
           predicates:
-            - Path=/speedrun/start
+            - Path=/speedruns/start
             - Method=POST
           filters:
             - SetPath=/api/speedruns/start
         - id: speedrun-end
-          uri: http://${SPEEDRUN_SERVICE_BASEURL:localhost:8081}
+          uri: http://${SPEEDRUN_SERVICE_BASEURL}
           predicates:
-            - Path=/speedrun/end
+            - Path=/speedruns/end
             - Method=POST
           filters:
             - SetPath=/api/speedruns/end
         - id: speedrun-profile
-          uri: http://${SPEEDRUN_SERVICE_BASEURL:localhost:8081}
+          uri: http://${SPEEDRUN_SERVICE_BASEURL}
           predicates:
-            - Path=/speedrun/profile
+            - Path=/speedruns/profile
             - Method=GET
           filters:
             - SetPath=/api/speedruns/profiles
         #Game-service
         - id: game-all
-          uri: http://${GAME_SERVICE_BASEURL:localhost:8080}
+          uri: http://${GAME_SERVICE_BASEURL}
           predicates:
             - Path=/games
             - Method=GET
           filters:
             - SetPath=/api/games/all
         - id: game-top5
-          uri: http://${GAME_SERVICE_BASEURL:localhost:8080}
+          uri: http://${GAME_SERVICE_BASEURL}
           predicates:
             - Path=/games/top5
             - Method=GET
@@ -70,7 +70,7 @@ spring:
             - SetPath=/api/games/top5
         #Profile-service
         - id: profile-service
-          uri: http://${PROFILE_SERVICE_BASEURL:localhost:8082}
+          uri: http://${PROFILE_SERVICE_BASEURL}
           predicates:
             - Path=/profiles
             - Method=GET
