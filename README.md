@@ -66,7 +66,13 @@ En sommige zijn enkel toegankelijk door te authenticeren met OAuth2:
 - ***/profiles/update***
 - ***/profiles/delete***
 ## 2.2 Kubernetes
-Om de applicatie te deployen heb ik gekozen om Kubernetes te gebruiken. Deployen naar Okteto is niet gelukt dus heb ik de cluster lokaal moeten draaien m;b.v. Docker-desktop.
+Om de applicatie te deployen heb ik gekozen om Kubernetes te gebruiken. Deployen naar Okteto is niet gelukt omdat ze geen nieuwe accounts meer toelaten, dus heb ik de cluster lokaal moeten draaien m.b.v. Docker-desktop.
+
+Alle files die te maken hebben met het in orde brengen van Kubernetes staan in de Kubernetes folder in deze repo. In deze folder zijn de verschillende soorten resources terug te vinden:
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/afdcb514-8c2a-4a0c-a779-1dbb0e526408)
+
+
 ### Github actions
 ### Manifest files
 ## 2.2.1 Prometheus
