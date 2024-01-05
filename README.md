@@ -27,7 +27,9 @@ De 3 microservices die gebruikt worden in deze applicatie zijn:
 - Profile-service - MySQL database
 ### Game-service
 De game-service is op poort 8080 toegankelijk voor de andere services en de API-gateway. in deze service heb je deze endpoints:
-- ***/all***: geeft alle games van de applicatie terug 
+- ***/all***: geeft alle games van de applicatie terug
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/b21eb708-8f09-48e6-bb32-1ce791c5c925)
+
 - ***/getid***: wordt enkel door de speedrun-service aangeroepen als er een nieuwe speedrun aangemaakt word. Het stuurt voor de gekozen game de ID (niet primary key maar een aparte waarde) mee.
 - ***/top5***: Dit is de belangrijkste endpoint voor deze service. voor een ingegeven game wordt er een request gestuurd naar de speedrun-service om de 5 beste speedruns van deze game te verzamelen. In de speedrun-service staat de logica om de top 5 speedruns te verkrijgen waarbij een request wordt gestuurd van speedrun-service naar de profile-service om ook de profiles erbij te kunnen zien
 - ***/create***: Maakt een nieuwe game aan
