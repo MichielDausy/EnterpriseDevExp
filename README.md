@@ -103,7 +103,13 @@ Dit zodat ik op de juiste poort zal komen en met de API-gateway verbonden zal zi
 ## 2.2.1 Prometheus
 Prometheus is een populaire monitoringtool voor Kubernetes vanwege de naadloze integratie met de Kubernetes-infrastructuur. Het begrijpt Kubernetes-componenten, verzamelt op efficiënte wijze statistieken en maakt flexibele query's voor monitoring mogelijk.
 
+Om prometheus te laten werken heb ik terug een service, deployment en een persistent volume moeten maken alsook een configMap met de scrapejobs om de pods te ontdekken in de cluster.
 
+Uiteindelijk kwam ik uit op de Prometheus Expression Browser dat PromQL gebruikt om query's uit te voeren voor de monitoring.
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/5f54bd62-b0c2-4ada-b63a-e0536c50bd25)
+
+De query hierboven toont de status van de replicas van de deployments. Ik heb voor elke deployment maar 1 replica gemaakt maar als je de deployment aanpast en meerdere replicas wenst dan zullen de waardes rechts ook veranderen.
 ## 2.2.1.1 Grafana
 ## Technologieën gebruikt
 - Spring boot
