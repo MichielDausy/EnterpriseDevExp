@@ -38,9 +38,15 @@ De game-service is op poort 8080 toegankelijk voor de andere services en de API-
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/b7c3f0a3-49c7-43df-8b10-8acc45927ffa)
 
 Als ik mezelf authoriseer dan lukt dit wel:
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/02db5548-18ad-443a-a4f6-cfed4c9253a8)
 
 - ***/update***: Wijzigt een bestaande game
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/0afc1481-edef-4300-8f2c-cceb84326b16)
+
 - ***/delete***: Verwijderd een bestaande game. Het wijzigen lukt dus enkel als er geen speedruns meer aan gekoppeld zijn
+If a game is still in use this error message will show:
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/3ff90ac5-2987-4cf3-adde-6ad7c174dd02)
+
 ### Speedrun-service
 De speedrun-service is op poort 8081 toegankelijk voor de andere services en de API-gateway. in deze service heb je deze endpoints:
 - ***/start***: Hier wordt er een gloednieuwe speedrun aangemaakt en wordt er een tijd bijgehouden die we de startijd noemen. Bij het aanmaken van een speedrun wordt er een game naam en profiel meegegeven, deze naam herkent de speedrun-service niet omdat ze niet in de database van deze service zitten, enkel de ID's ervan. Daarom wordt er een request naar de game-service en profile-service gestuurd om deze ID's te krijgen.
