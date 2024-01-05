@@ -72,7 +72,7 @@ Alle files die te maken hebben met het in orde brengen van Kubernetes staan in d
 
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/afdcb514-8c2a-4a0c-a779-1dbb0e526408)
 
-
+Onder de deployments folder staan alle deployments die ik gebruik. Deze gaan pods maken van de microservices, de API-gateway, de databases en ook prometheus monitoring en Grafana.
 ### Github actions
 ### Manifest files
 ## 2.2.1 Prometheus
