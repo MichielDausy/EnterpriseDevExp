@@ -98,7 +98,7 @@ public class GameService {
     public String deleteGame(GameRequest gameRequest) {
         Game game = gameRepository.findByGameIdEquals(gameRequest.getGameId());
         Boolean gameInUse = webClient.get()
-                        .uri("http://" + speedrunServiceBaseUrl + "/api/speeedruns/gameid",
+                        .uri("http://" + speedrunServiceBaseUrl + "/api/speedruns/gameid",
                                 uriBuilder -> uriBuilder.queryParam("gameId", gameRequest.getGameId()).build())
                                 .retrieve().bodyToMono(Boolean.class).block();
         if (gameInUse) {
