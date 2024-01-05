@@ -1,0 +1,35 @@
+# speedrun-service deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: speedrun-service
+  labels:
+    service: speedrun-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: speedrun-service
+  template:
+    metadata:
+      labels:
+        service: speedrun-service
+    spec:
+      containers:
+      - name: speedrun-service
+        image: r0900099/speedrun-service
+        ports:
+        - containerPort: 8081
+        env:
+        - name: GAME_SERVICE_BASEURL
+          value: game-service:8080
+        - name: PROFILE_SERVICE_BASEURL
+          value: profile-service:8082
+        - name: MYSQL_DB_USERNAME
+          value: root
+        - name: MYSQL_DB_PASSWORD
+          value: abc123
+        - name: MYSQL_DB_HOST
+          value: mysql-speedrun
+        - name: MYSQL_DB_PORT
+          value: "3308"

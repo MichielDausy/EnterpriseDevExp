@@ -1,0 +1,29 @@
+# api-gateway-service deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-service
+  labels:
+    service: api-gateway-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: api-gateway-service
+  template:
+    metadata:
+      labels:
+        service: api-gateway-service
+    spec:
+      containers:
+      - name: api-gateway-service
+        image: r0900099/api-gateway
+        ports:
+        - containerPort: 8085
+        env:
+        - name: SPEEDRUN_SERVICE_BASEURL
+          value: speedrun-service:8081
+        - name: GAME_SERVICE_BASEURL
+          value: game-service:8080
+        - name: PROFILE_SERVICE_BASEURL
+          value: profile-service:8082

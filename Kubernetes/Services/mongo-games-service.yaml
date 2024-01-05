@@ -1,0 +1,13 @@
+# mongo-games service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-games
+  labels:
+    service: mongo-games
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+  selector:
+    service: mongo-games

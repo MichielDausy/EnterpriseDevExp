@@ -1,0 +1,32 @@
+#mysql-grafana deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-grafana
+  labels:
+    service: mysql-grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: mysql-grafana
+  template:
+    metadata:
+      labels:
+        service: mysql-grafana
+    spec:
+      containers:
+      - name: mysql-grafana
+        image: mysql:latest
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: abc123
+        volumeMounts:
+        - name: mysql-grafana-data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-grafana-data
+        persistentVolumeClaim:
+          claimName: mysql-grafana-data

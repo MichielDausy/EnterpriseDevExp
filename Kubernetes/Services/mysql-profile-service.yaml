@@ -1,0 +1,13 @@
+# mysql-profile service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-profile
+  labels:
+    service: mysql-profile
+spec:
+  ports:
+  - port: 3307
+    targetPort: 3306
+  selector:
+    service: mysql-profile

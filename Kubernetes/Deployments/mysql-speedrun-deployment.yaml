@@ -1,0 +1,32 @@
+# mysql-speedrun deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-speedrun
+  labels:
+    service: mysql-speedrun
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: mysql-speedrun
+  template:
+    metadata:
+      labels:
+        service: mysql-speedrun
+    spec:
+      containers:
+      - name: mysql-speedrun
+        image: mysql:latest
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: abc123
+        volumeMounts:
+        - name: mysql-speedrun-data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-speedrun-data
+        persistentVolumeClaim:
+          claimName: mysql-speedrun-data

@@ -1,0 +1,11 @@
+#Persistent volume claim 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-prometheus-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi

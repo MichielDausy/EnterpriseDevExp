@@ -1,0 +1,29 @@
+# game-service deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-service
+  labels:
+    service: game-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: game-service
+  template:
+    metadata:
+      labels:
+        service: game-service
+    spec:
+      containers:
+      - name: game-service
+        image: r0900099/game-service
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPEEDRUN_SERVICE_BASEURL
+          value: speedrun-service:8081
+        - name: MONGODB_PORT
+          value: "27017"
+        - name: MONGODB_HOST
+          value: mongo-games

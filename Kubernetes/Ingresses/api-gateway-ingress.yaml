@@ -1,0 +1,19 @@
+#Ingress
+#Api-gateway ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-gateway-service-ingress
+  namespace: speedrun-application
+spec:
+  rules:
+    - host: speedrun.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: api-gateway-service
+                port:
+                  number: 8085

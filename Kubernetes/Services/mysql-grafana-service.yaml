@@ -1,0 +1,13 @@
+# mysql-grafana service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-grafana
+  labels:
+    service: mysql-grafana
+spec:
+  ports:
+  - port: 3310
+    targetPort: 3306
+  selector:
+    service: mysql-grafana

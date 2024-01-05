@@ -1,0 +1,13 @@
+# speedrun-service service
+apiVersion: v1
+kind: Service
+metadata:
+  name: speedrun-service
+  labels:
+    service: speedrun-service
+spec:
+  ports:
+  - port: 8081
+    targetPort: 8081
+  selector:
+    service: speedrun-service

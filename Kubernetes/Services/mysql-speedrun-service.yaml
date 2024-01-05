@@ -1,0 +1,13 @@
+# mysql-speedrun service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-speedrun
+  labels:
+    service: mysql-speedrun
+spec:
+  ports:
+  - port: 3308
+    targetPort: 3306
+  selector:
+    service: mysql-speedrun

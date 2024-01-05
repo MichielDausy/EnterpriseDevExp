@@ -1,0 +1,29 @@
+# mongo-games deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-games
+  labels:
+    service: mongo-games
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: mongo-games
+  template:
+    metadata:
+      labels:
+        service: mongo-games
+    spec:
+      containers:
+      - name: mongo-games
+        image: mongo:latest
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongodb-game-data
+          mountPath: /data/db
+      volumes:
+      - name: mongodb-game-data
+        persistentVolumeClaim:
+          claimName: mongodb-game-data

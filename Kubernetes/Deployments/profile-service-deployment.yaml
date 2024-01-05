@@ -1,0 +1,33 @@
+# profile-service deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: profile-service
+  labels:
+    service: profile-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: profile-service
+  template:
+    metadata:
+      labels:
+        service: profile-service
+    spec:
+      containers:
+      - name: profile-service
+        image: r0900099/profile-service
+        ports:
+        - containerPort: 8082
+        env:
+        - name: SPEEDRUN_SERVICE_BASEURL
+          value: speedrun-service:8081
+        - name: MYSQL_DB_USERNAME
+          value: root
+        - name: MYSQL_DB_PASSWORD
+          value: abc123
+        - name: MYSQL_DB_HOST
+          value: mysql-profile
+        - name: MYSQL_DB_PORT
+          value: "3307"

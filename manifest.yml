@@ -371,10 +371,10 @@ spec:
       http:
         paths:
           - pathType: Prefix
-            path: /  # Define the path to your service
+            path: /
             backend:
               service:
                 name: api-gateway-service
                 port:
-                  number: 8085  # Target port of your service
+                  number: 8085
 ---
