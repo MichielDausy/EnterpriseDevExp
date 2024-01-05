@@ -126,6 +126,14 @@ Ik kan ook bijvoorbeeld zien hoeveel storage elke volume heeft gekregen:
 
 Zoals je kan zien is de volume ongeveer 100MB groot (de waarden staan in bytes)
 ## 2.2.1.1 Grafana
+Ten slotte is er ook nog een dashboard gemaakt met Grafana om de monitoring iets makkelijker te interpreteren. Ook voor Grafana heb ik een persisten volume, service, deployment en 2 configMaps moeten maken. In deze configMaps staat de connectie met de prometheus service zodat Grafana de data uit prometheus kan halen om in de visualizaties te steken. En de 2de configMap staat de json code van hoe het dashboard eruit zal zien met alle juiste queries.
+
+Het dashboard dat ik heb gemaakt ziet er als volgt uit:
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/3c49a4bd-8384-40ac-899c-ac6923771c65)
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/fffb4671-f705-43a0-85ce-0146bd5acd43)
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/056e6db7-f3c3-421f-a84d-b1548c702c94)
+
 ## Technologieën gebruikt
 - Spring boot
 - MySQL
