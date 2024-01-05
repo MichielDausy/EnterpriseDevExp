@@ -65,6 +65,7 @@ spring:
           uri: http://${GAME_SERVICE_BASEURL}
           predicates:
             - Path=/games/create
+            - Method=POST
           filters:
             - SetPath=/api/games/create
         - id: game-update
