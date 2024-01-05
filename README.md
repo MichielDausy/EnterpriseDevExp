@@ -110,6 +110,21 @@ Uiteindelijk kwam ik uit op de Prometheus Expression Browser dat PromQL gebruikt
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/5f54bd62-b0c2-4ada-b63a-e0536c50bd25)
 
 De query hierboven toont de status van de replicas van de deployments. Ik heb voor elke deployment maar 1 replica gemaakt maar als je de deployment aanpast en meerdere replicas wenst dan zullen de waardes rechts ook veranderen.
+
+Nog een voorbeeld van een query is om te monitoren of dat de deployment "available" is
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/f3042eb6-7814-44bd-83c3-03bc94f2d758)
+
+Er zijn hier voor elke deployment 3 rijen:
+- Availability status = true
+- Availability status = false
+- Availability status = unknown
+
+Ik kan ook bijvoorbeeld zien hoeveel storage elke volume heeft gekregen:
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/2fcabb63-0200-4394-b76d-58bb194317c8)
+
+Zoals je kan zien is de volume ongeveer 100MB groot (de waarden staan in bytes)
 ## 2.2.1.1 Grafana
 ## Technologieën gebruikt
 - Spring boot
