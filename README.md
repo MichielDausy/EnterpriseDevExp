@@ -7,12 +7,7 @@ De applicatiestructuur ziet er als volgt uit:
 
 ![Speedrun](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/ddce5ac4-3035-443f-9b37-eceb346a4e87)
 
-Je kan zien dat er 3 microservices en 1 api-gateway is. De 3 microservices zijn onderverdeelt in:
-- Game-service - MongoDB
-- Speedrun-service - MySQL
-- Profile-service - MySQL
-
-
+Je kan zien dat er 3 microservices en 1 api-gateway is.
 Elke service heeft zowat dezelfde bestanden zoals controllers, dto's, models, repositories en services.
 
 De controller is eigenlijk het toegangspunt tot de service, alle request die naar een service gaan komen eerst in de controller terecht. In zo'n controller staan alle endpoints van de service, als deze endpoints gebruikt worden zal de controller de service files gebruiken om de achterliggende logica te draaien.
@@ -25,8 +20,19 @@ In een service file wordt de logica dat moet gebeuren uitgevoerd alsook de commu
 Om zowel data te ontvangen en te versturen worden dto's gebruikt.
 
 Om data uit een database te halen worden repositories gebruikt. De service files gebruiken deze repositories om de nodige data te krijgen.
+
+De 3 microservices die gebruikt worden in deze applicatie zijn:
+- Game-service - MongoDB database
+- Speedrun-service - MySQL database
+- Profile-service - MySQL database
 ### Game-service
-In de game-service 
+de game-service is op poort 8080 toegankelijk voor de andere services en de API-gateway. in deze service heb je deze endpoints:
+- /all: geeft alle games van de applicatie terug 
+- /getid: wordt enkel door de speedrun-service aangeroepen als er een nieuwe speedrun aangemaakt word. Het stuurt voor de gekozen game de ID (niet primary key maar een aparte waarde) mee.
+- /top5: Dit is de belangrijkste endpoint voor deze service. voor een ingegeven game wordt er een request gestuurd naar de speedrun-service om de 5 beste speedruns van deze game te verzamelen. In de speedrun-service staat de logica om de top 5 speedruns te verkrijgen waarbij een request wordt gestuurd van speedrun-service naar de profile-service om ook de profiles erbij te kunnen zien
+- /create: Maakt een nieuwe game aan
+- /update: Wijzigt een bestaande game
+- /delete: Verwijderd een bestaande game. Het wijzigen lukt dus enkel als er geen speedruns meer aan gekoppeld zijn
 ## Features
 De 3 belangrijkste features van de applicatie zijn de start/stop, leaderboard en API-gateway functionaliteiten
 - Start en stop functionaliteit: Voor deze functionaliteit zijn er 2 endpoints gemaakt:
