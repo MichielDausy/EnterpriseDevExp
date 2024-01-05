@@ -3,10 +3,16 @@ De Speedrun Tracker applicatie is een handige tool ontworpen voor speedrunners o
 
 Met deze applicatie kan je dus een speedrun voor een game starten en beëindigen waarbij de tijd wordt berekent en deze te zien kan zijn met alle andere speedruns voor die game.
 ## Features
-- Start en stop functionaliteit:
+De 3 belangrijkkste features van de applicatie zijn de start/stop, leaderboard en API-gateway functionaliteiten
+- Start en stop functionaliteit: Voor deze functionaliteit zijn er 2 endpoints gemaakt:
+  - /start: Hier wordt er een gloednieuwe speedrun aangemaakt en wordt er een tijd bijgehouden die we de startijd noemen.
+  - /end: een request naar deze endpoint zorgt ervoor dat de eindtijd bepaald word. Het tijdsverschil tussen de startijd en eindtijd is de effectieve tijdsduur van de speedrun.
 - Top 5 leaderboard van games:
+- API-gateway: 
 ## Technologieën gebruikt
 - Spring boot
+- MySQL
+- MongoDB
 - Junit
 - Kubernetes
 - Prometheus
