@@ -91,9 +91,19 @@ Al deze variabelen worden dus in de deployment files meegegeven
 
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/86724cd5-6827-4fae-822b-62060128c20c)
 
-### Github actions
-### Manifest files
+Ik heb ook een ingress resource gemaakt zodat er van buiten de cluster een connectie met de API-gateway gemaakt kan worden.
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/0a2e9b6b-069f-474d-9a74-65bbfe09244e)
+
+De DNS is speedrun.com (speedrun.com moet toegevoegd worden aan de hosts file) en vanaf dat je op de root zit en de juiste poort meegeeft ben je verbonden met de API-gateway. Om dit te laten werken heb ik een Nodeport van de API-gateway service meoten maken:
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/a56a69cb-9d97-4995-aff8-a3a79fb7020b)
+
+Dit zodat ik op de juiste poort zal komen en met de API-gateway verbonden zal zijn.
 ## 2.2.1 Prometheus
+Prometheus is een populaire monitoringtool voor Kubernetes vanwege de naadloze integratie met de Kubernetes-infrastructuur. Het begrijpt Kubernetes-componenten, verzamelt op efficiënte wijze statistieken en maakt flexibele query's voor monitoring mogelijk.
+
+
 ## 2.2.1.1 Grafana
 ## Technologieën gebruikt
 - Spring boot
