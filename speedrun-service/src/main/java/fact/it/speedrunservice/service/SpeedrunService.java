@@ -118,7 +118,7 @@ public class SpeedrunService {
 
     public boolean checkProfileId(String profileId) {
         List<Speedrun> speedruns = speedrunRepository.findByProfileIdEquals(profileId);
-        if (speedruns == null) {
+        if (speedruns.isEmpty()) {
             return true;
         }
         return false;

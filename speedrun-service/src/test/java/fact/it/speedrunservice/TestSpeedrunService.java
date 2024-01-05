@@ -165,7 +165,7 @@ public class TestSpeedrunService {
         String gameId = "123";
 
         when(speedrunRepository.findByGameIdEquals(gameId))
-                .thenReturn(null);
+                .thenReturn(new ArrayList<>());
 
         // Act
         boolean result = speedrunService.checkGameId(gameId);
@@ -204,7 +204,7 @@ public class TestSpeedrunService {
         String profileId = "456";
 
         when(speedrunRepository.findByProfileIdEquals(profileId))
-                .thenReturn(null);
+                .thenReturn(new ArrayList<>());
 
         // Act
         boolean result = speedrunService.checkProfileId(profileId);
