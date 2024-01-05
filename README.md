@@ -79,6 +79,7 @@ De profile-service is op poort 8082 toegankelijk voor de andere services en de A
 
 - ***/delete***: Verwijderd een bestaande profiel. Het wijzigen lukt dus enkel als er geen speedruns meer aan gekoppeld zijn
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/84e35898-dace-42e2-ba20-43e813a06eba)
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/b352c433-1378-4e61-97ff-3d601bf2177e)
 
 ### API-gateway
 De API-gateway wordt gebruikt om toegang tot de services van buiten de applicatie naar de juiste endpoints te sturen. Hierbij zijn sommige endpoints toegankelijk voor iedereen:
