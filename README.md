@@ -44,7 +44,7 @@ Als ik mezelf authoriseer dan lukt dit wel:
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/0afc1481-edef-4300-8f2c-cceb84326b16)
 
 - ***/delete***: Verwijderd een bestaande game. Het wijzigen lukt dus enkel als er geen speedruns meer aan gekoppeld zijn
-If a game is still in use this error message will show:
+Als de game nog gebruikt wordt bij een speedrun wordt deze error getoond:
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/3ff90ac5-2987-4cf3-adde-6ad7c174dd02)
 
 ### Speedrun-service
