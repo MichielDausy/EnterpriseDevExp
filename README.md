@@ -66,7 +66,7 @@ En sommige zijn enkel toegankelijk door te authenticeren met OAuth2:
 - ***/profiles/update***
 - ***/profiles/delete***
 ## 2.2 Kubernetes
-
+Om de applicatie te deployen heb ik gekozen om Kubernetes te gebruiken. 
 ### Github actions
 ### Manifest files
 ## 2.2.1 Prometheus
