@@ -110,7 +110,7 @@ public class SpeedrunService {
 
     public boolean checkGameId(String gameId) {
         List<Speedrun> speedruns = speedrunRepository.findByGameIdEquals(gameId);
-        if (speedruns == null) {
+        if (speedruns.isEmpty()) {
             return true;
         }
         return false;
