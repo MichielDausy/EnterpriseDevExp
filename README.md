@@ -41,10 +41,35 @@ De speedrun-service is op poort 8081 toegankelijk voor de andere services en de 
 - ***/gameid***:  Als een game verwijderd moet worden dan gaat de game-service een request doe nnaar deze endpoint om te checken of dat de game niet meer in gebruik is voor een speedrun.
 - ***/profileid***: Als een profiel verwijderd moet worden dan gaat de profile-service een request doe nnaar deze endpoint om te checken of dat de profiel niet meer in gebruik is voor een speedrun.
 - ***/top5***: Deze wordt gebruikt door de game-service waarbij de 5 beste speedruns uit de database gehaald worden. Er wordt hier ook een request naar de profile-service gestuurd om voor de die 5 speedruns de profielen bij te tonen.
+### Profile-service
+De profile-service is op poort 8082 toegankelijk voor de andere services en de API-gateway. in deze service heb je deze endpoints:
+- ***/all***: geeft alle profielen van de applicatie terug
+- ***/getid***: wordt enkel door de speedrun-service aangeroepen als er een nieuwe speedrun aangemaakt word. Het stuurt voor de gekozen profiel de ID (niet primary key maar een aparte waarde) mee.
+- ***/top5***: Deze wordt gebruikt door de speedrun-service om de profielen te krijgen die bij de 5 beste speedruns toebehoren
+- ***/create***: Maakt een nieuwe profiel aan
+- ***/update***: Wijzigt een bestaande profiel
+- ***/delete***: Verwijderd een bestaande profiel. Het wijzigen lukt dus enkel als er geen speedruns meer aan gekoppeld zijn
+### API-gateway
+De API-gateway wordt gebruikt om toegang tot de services van buiten de applicatie naar de juiste endpoints te sturen. Hierbij zijn sommige endpoints toegankelijk voor iedereen:
+- ***/speedruns/profile***
+- ***/games***
+- ***/games/top5***
+
+En sommige zijn enkel toegankelijk door te authenticeren met OAuth2:
+- ***/speedruns/start***
+- ***/speedruns/end***
+- ***/games/create***
+- ***/games/update***
+- ***/games/delete***
+- ***/profiles***
+- ***/profiles/create***
+- ***/profiles/update***
+- ***/profiles/delete***
 ## Technologieën gebruikt
 - Spring boot
 - MySQL
 - MongoDB
+- OAuth2
 - Junit
 - Kubernetes
 - Prometheus
