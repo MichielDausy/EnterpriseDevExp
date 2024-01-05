@@ -79,7 +79,7 @@ spring:
           uri: http://${GAME_SERVICE_BASEURL}
           predicates:
             - Path=/games/delete
-            - Method=PUT
+            - Method=DELETE
           filters:
             - SetPath=/api/games/delete
         #Profile-service
