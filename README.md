@@ -66,7 +66,7 @@ En sommige zijn enkel toegankelijk door te authenticeren met OAuth2:
 - ***/profiles/update***
 - ***/profiles/delete***
 ## 2.2 Kubernetes
-Om de applicatie te deployen heb ik gekozen om Kubernetes te gebruiken. 
+Om de applicatie te deployen heb ik gekozen om Kubernetes te gebruiken. Deployen naar Okteto is niet gelukt dus heb ik de cluster lokaal moeten draaien m;b.v. Docker-desktop.
 ### Github actions
 ### Manifest files
 ## 2.2.1 Prometheus
