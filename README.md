@@ -8,11 +8,17 @@ De applicatiestructuur ziet er als volgt uit:
 ![Speedrun](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/ddce5ac4-3035-443f-9b37-eceb346a4e87)
 
 Je kan zien dat er 3 microservices en 1 api-gateway is. De 3 microservices zijn onderverdeelt in:
-- Game-service
-- Speedrun-service
-- Profile-service
+- Game-service - MongoDB
+- Speedrun-service - MySQL
+- Profile-service - MySQL
+
+
 Elke service heeft zowat dezelfde bestanden zoals een controller, dto's, models, repositories en services.
+
 De controller is eigenlijk het toegangspunt tot de service, alle request die naar een service gaan komen eerst in de controller terecht. In zo'n controller staan alle endpoints van de service, als deze endpoints gebruikt worden zal de controller de service files gebruiken om de achterliggende logica te draaien.
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/8c450b16-0640-4ff1-b4db-45bd071d94fa)
+
+In een service file wordt de logica dat moet gebeuren uitgevoerd alsook de communicatie tussen de microservices, bijvoorbeeld voor het deleeten van een game moet er eerst gecheckt worden of dat deze game niet meer in geebruik is voor een speedrun. Aangezien dat 
 ### Game-service
 In de game-service 
 ## Features
