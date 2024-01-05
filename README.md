@@ -47,6 +47,9 @@ Als ik mezelf authoriseer dan lukt dit wel:
 Als de game nog gebruikt wordt bij een speedrun wordt deze error getoond:
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/3ff90ac5-2987-4cf3-adde-6ad7c174dd02)
 
+Als de game niet in gebruik is is dit de output:
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/ba781a3a-2ff2-47ac-aeb6-895615240545)
+
 ### Speedrun-service
 De speedrun-service is op poort 8081 toegankelijk voor de andere services en de API-gateway. in deze service heb je deze endpoints:
 - ***/start***: Hier wordt er een gloednieuwe speedrun aangemaakt en wordt er een tijd bijgehouden die we de startijd noemen. Bij het aanmaken van een speedrun wordt er een game naam en profiel meegegeven, deze naam herkent de speedrun-service niet omdat ze niet in de database van deze service zitten, enkel de ID's ervan. Daarom wordt er een request naar de game-service en profile-service gestuurd om deze ID's te krijgen.
