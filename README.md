@@ -27,7 +27,9 @@ De 3 microservices die gebruikt worden in deze applicatie zijn:
 - Profile-service - MySQL database
 ### Game-service
 De game-service is op poort 8080 toegankelijk voor de andere services en de API-gateway. in deze service heb je deze endpoints:
-- ***/all***: geeft alle games van de applicatie terug 
+- ***/all***: geeft alle games van de applicatie terug
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/b21eb708-8f09-48e6-bb32-1ce791c5c925)
+
 - ***/getid***: wordt enkel door de speedrun-service aangeroepen als er een nieuwe speedrun aangemaakt word. Het stuurt voor de gekozen game de ID (niet primary key maar een aparte waarde) mee.
 - ***/top5***: Dit is de belangrijkste endpoint voor deze service. voor een ingegeven game wordt er een request gestuurd naar de speedrun-service om de 5 beste speedruns van deze game te verzamelen. In de speedrun-service staat de logica om de top 5 speedruns te verkrijgen waarbij een request wordt gestuurd van speedrun-service naar de profile-service om ook de profiles erbij te kunnen zien
 - ***/create***: Maakt een nieuwe game aan
@@ -66,17 +68,90 @@ En sommige zijn enkel toegankelijk door te authenticeren met OAuth2:
 - ***/profiles/update***
 - ***/profiles/delete***
 ## 2.2 Kubernetes
-Om de applicatie te deployen heb ik gekozen om Kubernetes te gebruiken. 
-### Github actions
-### Manifest files
+Om de applicatie te deployen heb ik gekozen om Kubernetes te gebruiken. **Deployen naar Okteto is niet gelukt omdat ze geen nieuwe accounts meer toelaten**, dus heb ik de cluster lokaal moeten draaien m.b.v. Docker-desktop.
+
+Alle files die te maken hebben met het in orde brengen van Kubernetes staan in de Kubernetes folder in deze repo. In deze folder zijn de verschillende soorten resources terug te vinden:
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/afdcb514-8c2a-4a0c-a779-1dbb0e526408)
+
+Onder de deployments folder staan alle deployments die ik gebruik. Deze gaan pods maken van de microservices, de API-gateway, de databases en ook prometheus monitoring en Grafana.
+Belangrijk is dat in de deployments de correcte docker images van docker hub worden gehaald. Deze images worden autolmatisch gepushed naar docker hub door de github actions in deze repo. Hierdoor zijn er 4 images op docker hub die ik gebruik om de pod aan te maken.
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/f93f5941-7322-4cba-9f3d-3056411f43ca)
+
+Environment variabelen zijn ook gespecifieerd in de deployment files. De microservices verwachten een environment variabele dat aangeeft met welke database ze moeten communiceren en met welke url ze moeten communiceren naar de andere microservices. Als voorbeeld neem ik de speedrun microservice:
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/1067680c-597f-4903-9837-c889bff3087c)
+
+Deze verwacht 4 variabelen:
+- MYSQL_DB_HOST
+- MYSQL_DB_PORT
+- PROFILE_SERVICE_BASEURL
+- GAME_SERVICE_BASEURL
+
+Al deze variabelen worden dus in de deployment files meegegeven
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/86724cd5-6827-4fae-822b-62060128c20c)
+
+Ik heb ook een ingress resource gemaakt zodat er van buiten de cluster een connectie met de API-gateway gemaakt kan worden.
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/0a2e9b6b-069f-474d-9a74-65bbfe09244e)
+
+De DNS is speedrun.com (speedrun.com moet toegevoegd worden aan de hosts file) en vanaf dat je op de root zit en de juiste poort meegeeft ben je verbonden met de API-gateway. Om dit te laten werken heb ik een Nodeport van de API-gateway service meoten maken:
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/a56a69cb-9d97-4995-aff8-a3a79fb7020b)
+
+Dit zodat ik op de juiste poort zal komen en met de API-gateway verbonden zal zijn.
 ## 2.2.1 Prometheus
+Prometheus is een populaire monitoringtool voor Kubernetes vanwege de naadloze integratie met de Kubernetes-infrastructuur. Het begrijpt Kubernetes-componenten, verzamelt op efficiënte wijze statistieken en maakt flexibele query's voor monitoring mogelijk.
+
+Om prometheus te laten werken heb ik terug een service, deployment en een persistent volume moeten maken alsook een configMap met de scrapejobs om de pods te ontdekken in de cluster.
+
+Uiteindelijk kwam ik uit op de Prometheus Expression Browser dat PromQL gebruikt om query's uit te voeren voor de monitoring.
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/5f54bd62-b0c2-4ada-b63a-e0536c50bd25)
+
+De query hierboven toont de status van de replicas van de deployments. Ik heb voor elke deployment maar 1 replica gemaakt maar als je de deployment aanpast en meerdere replicas wenst dan zullen de waardes rechts ook veranderen.
+
+Nog een voorbeeld van een query is om te monitoren of dat de deployment "available" is
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/f3042eb6-7814-44bd-83c3-03bc94f2d758)
+
+Er zijn hier voor elke deployment 3 rijen:
+- Availability status = true
+- Availability status = false
+- Availability status = unknown
+
+Ik kan ook bijvoorbeeld zien hoeveel storage elke volume heeft gekregen:
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/2fcabb63-0200-4394-b76d-58bb194317c8)
+
+Zoals je kan zien is de volume ongeveer 100MB groot (de waarden staan in bytes)
 ## 2.2.1.1 Grafana
+Ten slotte is er ook nog een dashboard gemaakt met Grafana om de monitoring iets makkelijker te interpreteren. Ook voor Grafana heb ik een persisten volume, service, deployment en 2 configMaps moeten maken. In deze configMaps staat de connectie met de prometheus service zodat Grafana de data uit prometheus kan halen om in de visualizaties te steken. En de 2de configMap staat de json code van hoe het dashboard eruit zal zien met alle juiste queries.
+
+Het dashboard dat ik heb gemaakt ziet er als volgt uit:
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/3c49a4bd-8384-40ac-899c-ac6923771c65)
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/fffb4671-f705-43a0-85ce-0146bd5acd43)
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/056e6db7-f3c3-421f-a84d-b1548c702c94)
+
+Er staan veel nuttige visualizaties in zoals:
+- Totale CPU gebruik
+- totale RAM gebruik
+- Hoeveel pods er aan het draaien zijn
+- CPU gebruik per pod
+- RAM gebruik per pod
+- Hoeveel pods een bepaalde status zoals "running" hebben
+- Aantal containers dat op elke pod draaien
+- Aantal replicas per deployment
+- Of dat er replicas unavailable zijn
 ## Technologieën gebruikt
-- Spring boot
-- MySQL
-- MongoDB
-- OAuth2
-- Junit
-- Kubernetes
-- Prometheus
-- Grafana
+- Spring boot: Met dit framework en dependencies zoals Lombok, Spring Cloud Gateway, etc.
+- MySQL: De RDMS voor 2 microservices + prometheus en Grafana storage
+- MongoDB: De RDMS voor de game microservice
+- OAuth2: Via Google Cloud Platform authenticatie toegevoegd aan de API-gateway
+- Junit & Mockito: Gebruikt voor het testen van alle endpoints
+- Kubernetes: Gebruikt om de applicatie te deployen
+- Prometheus: Monitoring van de pods en cluster
+- Grafana: Monitoring van de pods en cluster via visualisaties
