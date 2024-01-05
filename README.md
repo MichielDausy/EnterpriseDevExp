@@ -32,7 +32,13 @@ De game-service is op poort 8080 toegankelijk voor de andere services en de API-
 
 - ***/getid***: wordt enkel door de speedrun-service aangeroepen als er een nieuwe speedrun aangemaakt word. Het stuurt voor de gekozen game de ID (niet primary key maar een aparte waarde) mee.
 - ***/top5***: Dit is de belangrijkste endpoint voor deze service. voor een ingegeven game wordt er een request gestuurd naar de speedrun-service om de 5 beste speedruns van deze game te verzamelen. In de speedrun-service staat de logica om de top 5 speedruns te verkrijgen waarbij een request wordt gestuurd van speedrun-service naar de profile-service om ook de profiles erbij te kunnen zien
-- ***/create***: Maakt een nieuwe game aan
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/7e5a420f-9988-4cdc-b8de-26ec44d1c0a2)
+
+- ***/create***: Maakt een nieuwe game aan, zonder authenticatie zal dit een 401 unauthorized error teruggeven
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/b7c3f0a3-49c7-43df-8b10-8acc45927ffa)
+
+Als ik mezelf authoriseer dan lukt dit wel:
+
 - ***/update***: Wijzigt een bestaande game
 - ***/delete***: Verwijderd een bestaande game. Het wijzigen lukt dus enkel als er geen speedruns meer aan gekoppeld zijn
 ### Speedrun-service
