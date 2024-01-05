@@ -8,9 +8,13 @@ De applicatiestructuur ziet er als volgt uit:
 ![Speedrun](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/ddce5ac4-3035-443f-9b37-eceb346a4e87)
 
 Je kan zien dat er 3 microservices en 1 api-gateway is. De 3 microservices zijn onderverdeelt in:
-- Profile-service
-- Speedrun-service
 - Game-service
+- Speedrun-service
+- Profile-service
+Elke service heeft zowat dezelfde bestanden zoals een controller, dto's, models, repositories en services.
+De controller is eigenlijk het toegangspunt tot de service, alle request die naar een service gaan komen eerst in de controller terecht.
+### Game-service
+In de game-service 
 ## Features
 De 3 belangrijkste features van de applicatie zijn de start/stop, leaderboard en API-gateway functionaliteiten
 - Start en stop functionaliteit: Voor deze functionaliteit zijn er 2 endpoints gemaakt:
