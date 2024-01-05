@@ -134,12 +134,22 @@ Het dashboard dat ik heb gemaakt ziet er als volgt uit:
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/fffb4671-f705-43a0-85ce-0146bd5acd43)
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/056e6db7-f3c3-421f-a84d-b1548c702c94)
 
+Er staan veel nuttige visualizaties in zoals:
+- Totale CPU gebruik
+- totale RAM gebruik
+- Hoeveel pods er aan het draaien zijn
+- CPU gebruik per pod
+- RAM gebruik per pod
+- Hoeveel pods een bepaalde status zoals "running" hebben
+- Aantal containers dat op elke pod draaien
+- Aantal replicas per deployment
+- Of dat er replicas unavailable zijn
 ## Technologieën gebruikt
-- Spring boot
-- MySQL
-- MongoDB
-- OAuth2
-- Junit
-- Kubernetes
-- Prometheus
-- Grafana
+- Spring boot: Met dit framework en dependencies zoals Lombok, Spring Cloud Gateway, etc.
+- MySQL: De RDMS voor 2 microservices + prometheus en Grafana storage
+- MongoDB: De RDMS voor de game microservice
+- OAuth2: Via Google Cloud Platform authenticatie toegevoegd aan de API-gateway
+- Junit & Mockito: Gebruikt voor het testen van alle endpoints
+- Kubernetes: Gebruikt om de applicatie te deployen
+- Prometheus: Monitoring van de pods en cluster
+- Grafana: Monitoring van de pods en cluster via visualisaties
