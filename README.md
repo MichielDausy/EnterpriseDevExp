@@ -65,6 +65,11 @@ En sommige zijn enkel toegankelijk door te authenticeren met OAuth2:
 - ***/profiles/create***
 - ***/profiles/update***
 - ***/profiles/delete***
+## Kubernetes
+### Github actions
+### Maniest files
+## Prometheus
+## Grafana
 ## Technologieën gebruikt
 - Spring boot
 - MySQL
