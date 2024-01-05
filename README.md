@@ -77,6 +77,19 @@ Belangrijk is dat in de deployments de correcte docker images van docker hub wor
 
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/f93f5941-7322-4cba-9f3d-3056411f43ca)
 
+Environment variabelen zijn ook gespecifieerd in de deployment files. De microservices verwachten een environment variabele dat aangeeft met welke database ze moeten communiceren en met welke url ze moeten communiceren naar de andere microservices. Als voorbeeld neem ik de speedrun microservice:
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/1067680c-597f-4903-9837-c889bff3087c)
+
+Deze verwacht 4 variabelen:
+- MYSQL_DB_HOST
+- MYSQL_DB_PORT
+- PROFILE_SERVICE_BASEURL
+- GAME_SERVICE_BASEURL
+
+Al deze variabelen worden dus in de deployment files meegegeven
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/86724cd5-6827-4fae-822b-62060128c20c)
 
 ### Github actions
 ### Manifest files
