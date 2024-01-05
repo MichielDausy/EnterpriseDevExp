@@ -86,7 +86,7 @@ public class ProfileService {
     public String deleteProfile(ProfileRequest profileRequest) {
         Profile profile = profileRepository.findByProfileIdEquals(profileRequest.getProfileId());
         Boolean profileInUse = webClient.get()
-                .uri("http://" + speedrunServiceBaseUrl + "/api/speedruns",
+                .uri("http://" + speedrunServiceBaseUrl + "/api/speedruns/profileid",
                         uriBuilder -> uriBuilder.queryParam("profileId", profileRequest.getProfileId()).build())
                 .retrieve().bodyToMono(Boolean.class).block();
         if (profileInUse) {
