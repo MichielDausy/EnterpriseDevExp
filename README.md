@@ -29,18 +29,12 @@ De 3 microservices die gebruikt worden in deze applicatie zijn:
 De game-service is op poort 8080 toegankelijk voor de andere services en de API-gateway. in deze service heb je deze endpoints:
 - ***/all***: geeft alle games van de applicatie terug
 
-
 - ***/getid***: wordt enkel door de speedrun-service aangeroepen als er een nieuwe speedrun aangemaakt word. Het stuurt voor de gekozen game de ID (niet primary key maar een aparte waarde) mee.
 - ***/top5***: Dit is de belangrijkste endpoint voor deze service. voor een ingegeven game wordt er een request gestuurd naar de speedrun-service om de 5 beste speedruns van deze game te verzamelen. In de speedrun-service staat de logica om de top 5 speedruns te verkrijgen waarbij een request wordt gestuurd van speedrun-service naar de profile-service om ook de profiles erbij te kunnen zien
 
-
 - ***/create***: Maakt een nieuwe game aan
 
-
-
-
 - ***/update***: Wijzigt een bestaande game
-
 
 - ***/delete***: Verwijderd een bestaande game. Het verwijderen lukt dus enkel als er geen speedruns meer aan gekoppeld zijn
 
@@ -48,12 +42,9 @@ De game-service is op poort 8080 toegankelijk voor de andere services en de API-
 De speedrun-service is op poort 8081 toegankelijk voor de andere services en de API-gateway. in deze service heb je deze endpoints:
 - ***/start***: Hier wordt er een gloednieuwe speedrun aangemaakt en wordt er een tijd bijgehouden die we de startijd noemen. Bij het aanmaken van een speedrun wordt er een game naam en profiel meegegeven, deze naam herkent de speedrun-service niet omdat ze niet in de database van deze service zitten, enkel de ID's ervan. Daarom wordt er een request naar de game-service en profile-service gestuurd om deze ID's te krijgen.
 
-
 - ***/end***: Door de ID van de speedrun (dat getoond wordt tijdens het aanmaken van een speedrun) mee te geven zal deze speedrun eindigen. Een eindtijd zal bijgehouden worden en de tijdsduur tussen deze 2 is de uiteindelijke tijd waarin de game gespeeld is.
 
-
 - ***/profile***: Deze endpoint geeft alle speedruns van een bepaalde profiel
-
 
 - ***/gameid***:  Als een game verwijderd moet worden dan gaat de game-service een request doen naar deze endpoint om te checken of dat de game niet meer in gebruik is voor een speedrun.
 - ***/profileid***: Als een profiel verwijderd moet worden dan gaat de profile-service een request doe nnaar deze endpoint om te checken of dat de profiel niet meer in gebruik is voor een speedrun.
@@ -62,17 +53,13 @@ De speedrun-service is op poort 8081 toegankelijk voor de andere services en de 
 De profile-service is op poort 8082 toegankelijk voor de andere services en de API-gateway. in deze service heb je deze endpoints:
 - ***/all***: geeft alle profielen van de applicatie terug
 
-
 - ***/getid***: wordt enkel door de speedrun-service aangeroepen als er een nieuwe speedrun aangemaakt word. Het stuurt voor de gekozen profiel de ID (niet primary key maar een aparte waarde) mee.
 - ***/top5***: Deze wordt gebruikt door de speedrun-service om de profielen te krijgen die bij de 5 beste speedruns toebehoren
 - ***/create***: Maakt een nieuwe profiel aan
 
-
 - ***/update***: Wijzigt een bestaande profiel
 
-
 - ***/delete***: Verwijderd een bestaande profiel. Het verwijderen lukt dus enkel als er geen speedruns meer aan gekoppeld zijn
-
 
 ### API-gateway
 De API-gateway wordt gebruikt om toegang tot de services van buiten de applicatie naar de juiste endpoints te sturen. Hierbij zijn sommige endpoints toegankelijk voor iedereen:
@@ -88,6 +75,8 @@ De API-gateway wordt gebruikt om toegang tot de services van buiten de applicati
 En sommige zijn enkel toegankelijk door te authenticeren met OAuth2:
 - ***/speedruns/start***
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/dd65201f-4fbe-4684-ade4-b73b8bea7b51)
+
+(In een front-end zou de speedrunId daarin tijdelijk opgeslagen worden)
 
 - ***/speedruns/end***
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/95cfdb1d-71cf-4f66-ada6-567153338d40)
