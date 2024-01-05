@@ -1,0 +1,124 @@
+---
+# mysql-prometheus service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-prometheus
+  labels:
+    service: mysql-prometheus
+spec:
+  ports:
+  - port: 3309
+    targetPort: 3306
+  selector:
+    service: mysql-prometheus
+---
+#Prometheus service
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-service
+  namespace: speedrun-application
+  annotations:
+      prometheus.io/scrape: 'true'
+      prometheus.io/port:   '9090'
+spec:
+  selector: 
+    app: prometheus-server
+  type: NodePort  
+  ports:
+    - port: 8086
+      targetPort: 9090
+---
+#Persistent volume claim 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-prometheus-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+#mysql-prometheus deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-prometheus
+  labels:
+    service: mysql-prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: mysql-prometheus
+  template:
+    metadata:
+      labels:
+        service: mysql-prometheus
+    spec:
+      containers:
+      - name: mysql-prometheus
+        image: mysql:latest
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: abc123
+        volumeMounts:
+        - name: mysql-prometheus-data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-prometheus-data
+        persistentVolumeClaim:
+          claimName: mysql-prometheus-data
+---
+#Prometheus deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-monitoring
+  namespace: speedrun-application
+  labels:
+    app: prometheus-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus-server
+  template:
+    metadata:
+      labels:
+        app: prometheus-server
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus
+          args:
+            - "--storage.tsdb.retention.time=12h"
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus/"
+          ports:
+            - containerPort: 9090
+          resources:
+            requests:
+              cpu: 500m
+              memory: 500M
+            limits:
+              cpu: 1
+              memory: 1Gi
+          volumeMounts:
+            - name: prometheus-config-volume
+              mountPath: /etc/prometheus/
+            - name: mysql-prometheus-data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: prometheus-config-volume
+          configMap:
+            defaultMode: 420
+            name: prometheus-server-conf
+        - name: mysql-prometheus-data
+          persistentVolumeClaim:
+            claimName: mysql-prometheus-data

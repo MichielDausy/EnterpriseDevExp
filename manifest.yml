@@ -281,6 +281,8 @@ spec:
         ports:
         - containerPort: 8082
         env:
+        - name: SPEEDRUN_SERVICE_BASEURL
+          value: speedrun-service:8081
         - name: MYSQL_DB_USERNAME
           value: root
         - name: MYSQL_DB_PASSWORD
