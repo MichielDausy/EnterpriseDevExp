@@ -4,7 +4,13 @@ De Speedrun Tracker applicatie is een handige tool ontworpen voor speedrunners o
 Met deze applicatie kan je dus een speedrun voor een game starten en beëindigen waarbij de tijd wordt berekent en deze te zien kan zijn met alle andere speedruns voor die game.
 ## Structuur
 De applicatiestructuur ziet er als volgt uit:
+
 ![Speedrun](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/ddce5ac4-3035-443f-9b37-eceb346a4e87)
+
+Je kan zien dat er 3 microservices en 1 api-gateway is. De 3 microservices zijn onderverdeelt in:
+- Profile-service
+- Speedrun-service
+- Game-service
 ## Features
 De 3 belangrijkste features van de applicatie zijn de start/stop, leaderboard en API-gateway functionaliteiten
 - Start en stop functionaliteit: Voor deze functionaliteit zijn er 2 endpoints gemaakt:
