@@ -12,7 +12,7 @@ Je kan zien dat er 3 microservices en 1 api-gateway is. De 3 microservices zijn 
 - Speedrun-service
 - Profile-service
 Elke service heeft zowat dezelfde bestanden zoals een controller, dto's, models, repositories en services.
-De controller is eigenlijk het toegangspunt tot de service, alle request die naar een service gaan komen eerst in de controller terecht.
+De controller is eigenlijk het toegangspunt tot de service, alle request die naar een service gaan komen eerst in de controller terecht. In zo'n controller staan alle endpoints van de service, als deze endpoints gebruikt worden zal de controller de service files gebruiken om de achterliggende logica te draaien.
 ### Game-service
 In de game-service 
 ## Features
