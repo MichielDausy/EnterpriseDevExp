@@ -28,60 +28,88 @@ De 3 microservices die gebruikt worden in deze applicatie zijn:
 ### Game-service
 De game-service is op poort 8080 toegankelijk voor de andere services en de API-gateway. in deze service heb je deze endpoints:
 - ***/all***: geeft alle games van de applicatie terug
-![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/b21eb708-8f09-48e6-bb32-1ce791c5c925)
 
 - ***/getid***: wordt enkel door de speedrun-service aangeroepen als er een nieuwe speedrun aangemaakt word. Het stuurt voor de gekozen game de ID (niet primary key maar een aparte waarde) mee.
 - ***/top5***: Dit is de belangrijkste endpoint voor deze service. voor een ingegeven game wordt er een request gestuurd naar de speedrun-service om de 5 beste speedruns van deze game te verzamelen. In de speedrun-service staat de logica om de top 5 speedruns te verkrijgen waarbij een request wordt gestuurd van speedrun-service naar de profile-service om ook de profiles erbij te kunnen zien
+
+- ***/create***: Maakt een nieuwe game aan
+
+- ***/update***: Wijzigt een bestaande game
+
+- ***/delete***: Verwijderd een bestaande game. Het verwijderen lukt dus enkel als er geen speedruns meer aan gekoppeld zijn
+
+### Speedrun-service
+De speedrun-service is op poort 8081 toegankelijk voor de andere services en de API-gateway. in deze service heb je deze endpoints:
+- ***/start***: Hier wordt er een gloednieuwe speedrun aangemaakt en wordt er een tijd bijgehouden die we de startijd noemen. Bij het aanmaken van een speedrun wordt er een game naam en profiel meegegeven, deze naam herkent de speedrun-service niet omdat ze niet in de database van deze service zitten, enkel de ID's ervan. Daarom wordt er een request naar de game-service en profile-service gestuurd om deze ID's te krijgen.
+
+- ***/end***: Door de ID van de speedrun (dat getoond wordt tijdens het aanmaken van een speedrun) mee te geven zal deze speedrun eindigen. Een eindtijd zal bijgehouden worden en de tijdsduur tussen deze 2 is de uiteindelijke tijd waarin de game gespeeld is.
+
+- ***/profile***: Deze endpoint geeft alle speedruns van een bepaalde profiel
+
+- ***/gameid***:  Als een game verwijderd moet worden dan gaat de game-service een request doen naar deze endpoint om te checken of dat de game niet meer in gebruik is voor een speedrun.
+- ***/profileid***: Als een profiel verwijderd moet worden dan gaat de profile-service een request doe nnaar deze endpoint om te checken of dat de profiel niet meer in gebruik is voor een speedrun.
+- ***/top5***: Deze wordt gebruikt door de game-service waarbij de 5 beste speedruns uit de database gehaald worden. Er wordt hier ook een request naar de profile-service gestuurd om voor de die 5 speedruns de profielen bij te tonen.
+### Profile-service
+De profile-service is op poort 8082 toegankelijk voor de andere services en de API-gateway. in deze service heb je deze endpoints:
+- ***/all***: geeft alle profielen van de applicatie terug
+
+- ***/getid***: wordt enkel door de speedrun-service aangeroepen als er een nieuwe speedrun aangemaakt word. Het stuurt voor de gekozen profiel de ID (niet primary key maar een aparte waarde) mee.
+- ***/top5***: Deze wordt gebruikt door de speedrun-service om de profielen te krijgen die bij de 5 beste speedruns toebehoren
+- ***/create***: Maakt een nieuwe profiel aan
+
+- ***/update***: Wijzigt een bestaande profiel
+
+- ***/delete***: Verwijderd een bestaande profiel. Het verwijderen lukt dus enkel als er geen speedruns meer aan gekoppeld zijn
+
+### API-gateway
+De API-gateway wordt gebruikt om toegang tot de services van buiten de applicatie naar de juiste endpoints te sturen. Hierbij zijn sommige endpoints toegankelijk voor iedereen:
+- ***/speedruns/profile***
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/2130333d-d532-4798-a231-233fc818b617)
+
+- ***/games***
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/b21eb708-8f09-48e6-bb32-1ce791c5c925)
+
+- ***/games/top5***
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/7e5a420f-9988-4cdc-b8de-26ec44d1c0a2)
 
-- ***/create***: Maakt een nieuwe game aan, zonder authenticatie zal dit een 401 unauthorized error teruggeven
+En sommige zijn enkel toegankelijk door te authenticeren met OAuth2:
+- ***/speedruns/start***
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/dd65201f-4fbe-4684-ade4-b73b8bea7b51)
+
+(In een front-end zou de speedrunId daarin tijdelijk opgeslagen worden)
+
+- ***/speedruns/end***
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/95cfdb1d-71cf-4f66-ada6-567153338d40)
+
+- ***/games/create***: zonder authenticatie zal dit een 401 unauthorized error teruggeven
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/b7c3f0a3-49c7-43df-8b10-8acc45927ffa)
 
 Als ik mezelf authoriseer dan lukt dit wel:
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/02db5548-18ad-443a-a4f6-cfed4c9253a8)
 
-- ***/update***: Wijzigt een bestaande game
+- ***/games/update***
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/0afc1481-edef-4300-8f2c-cceb84326b16)
 
-- ***/delete***: Verwijderd een bestaande game. Het wijzigen lukt dus enkel als er geen speedruns meer aan gekoppeld zijn
+- ***/games/delete***
 Als de game nog gebruikt wordt bij een speedrun wordt deze error getoond:
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/3ff90ac5-2987-4cf3-adde-6ad7c174dd02)
 
 Als de game niet in gebruik is is dit de output:
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/ba781a3a-2ff2-47ac-aeb6-895615240545)
 
-### Speedrun-service
-De speedrun-service is op poort 8081 toegankelijk voor de andere services en de API-gateway. in deze service heb je deze endpoints:
-- ***/start***: Hier wordt er een gloednieuwe speedrun aangemaakt en wordt er een tijd bijgehouden die we de startijd noemen. Bij het aanmaken van een speedrun wordt er een game naam en profiel meegegeven, deze naam herkent de speedrun-service niet omdat ze niet in de database van deze service zitten, enkel de ID's ervan. Daarom wordt er een request naar de game-service en profile-service gestuurd om deze ID's te krijgen.
-- ***/end***: Door de ID van de speedrun (dat getoond wordt tijdens het aanmaken van een speedrun) mee te geven zal deze speedrun eindigen. Een eindtijd zal bijgehouden worden en de tijdsduur tussen deze 2 is de uiteindelijke tijd waarin de game gespeeld is.
-- ***/profiles***: Deze endpoint geeft alle speedruns van een bepaalde profiel
-- ***/gameid***:  Als een game verwijderd moet worden dan gaat de game-service een request doe nnaar deze endpoint om te checken of dat de game niet meer in gebruik is voor een speedrun.
-- ***/profileid***: Als een profiel verwijderd moet worden dan gaat de profile-service een request doe nnaar deze endpoint om te checken of dat de profiel niet meer in gebruik is voor een speedrun.
-- ***/top5***: Deze wordt gebruikt door de game-service waarbij de 5 beste speedruns uit de database gehaald worden. Er wordt hier ook een request naar de profile-service gestuurd om voor de die 5 speedruns de profielen bij te tonen.
-### Profile-service
-De profile-service is op poort 8082 toegankelijk voor de andere services en de API-gateway. in deze service heb je deze endpoints:
-- ***/all***: geeft alle profielen van de applicatie terug
-- ***/getid***: wordt enkel door de speedrun-service aangeroepen als er een nieuwe speedrun aangemaakt word. Het stuurt voor de gekozen profiel de ID (niet primary key maar een aparte waarde) mee.
-- ***/top5***: Deze wordt gebruikt door de speedrun-service om de profielen te krijgen die bij de 5 beste speedruns toebehoren
-- ***/create***: Maakt een nieuwe profiel aan
-- ***/update***: Wijzigt een bestaande profiel
-- ***/delete***: Verwijderd een bestaande profiel. Het wijzigen lukt dus enkel als er geen speedruns meer aan gekoppeld zijn
-### API-gateway
-De API-gateway wordt gebruikt om toegang tot de services van buiten de applicatie naar de juiste endpoints te sturen. Hierbij zijn sommige endpoints toegankelijk voor iedereen:
-- ***/speedruns/profile***
-- ***/games***
-- ***/games/top5***
-
-En sommige zijn enkel toegankelijk door te authenticeren met OAuth2:
-- ***/speedruns/start***
-- ***/speedruns/end***
-- ***/games/create***
-- ***/games/update***
-- ***/games/delete***
 - ***/profiles***
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/03c3f811-385b-4dbd-b35d-71277aa573f8)
+
 - ***/profiles/create***
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/c456b49e-e288-4c1f-86ac-584075be0ae6)
+
 - ***/profiles/update***
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/1f4cfc17-875b-456a-be67-f47afee81b75)
+
 - ***/profiles/delete***
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/84e35898-dace-42e2-ba20-43e813a06eba)
+
+![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/b352c433-1378-4e61-97ff-3d601bf2177e)
 ## 2.2 Kubernetes
 Om de applicatie te deployen heb ik gekozen om Kubernetes te gebruiken. **Deployen naar Okteto is niet gelukt omdat ze geen nieuwe accounts meer toelaten**, dus heb ik de cluster lokaal moeten draaien m.b.v. Docker-desktop.
 
