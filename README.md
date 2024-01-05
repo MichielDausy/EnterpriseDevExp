@@ -179,7 +179,7 @@ Het dashboard dat ik heb gemaakt ziet er als volgt uit:
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/fffb4671-f705-43a0-85ce-0146bd5acd43)
 ![image](https://github.com/MichielDausy/EnterpriseDevExp/assets/91216885/056e6db7-f3c3-421f-a84d-b1548c702c94)
 
-Er staan veel nuttige visualizaties in zoals:
+Er staan veel nuttige visualisaties in zoals:
 - Totale CPU gebruik
 - totale RAM gebruik
 - Hoeveel pods er aan het draaien zijn
